@@ -1,24 +1,33 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, CartItem
-from .forms import AddToCartForm
+from .models import Producto, Carrito, CarritoItem
 
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'cart/product_list.html', {'products': products})
+def lista_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'carritoapp/lista_productos.html', {'productos': productos})
 
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    form = AddToCartForm(request.POST or None)
+def detalle_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    return render(request, 'carritoapp/detalle_producto.html', {'producto': producto})
 
-    if request.method == 'POST' and form.is_valid():
-        cart_item, created = CartItem.objects.get_or_create(product=product)
-        cart_item.quantity += form.cleaned_data['quantity']
-        cart_item.save()
-        return redirect('view_cart')
+def agregar_al_carrito(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    carrito_id = request.session.get('carrito_id')
+    if not carrito_id:
+        carrito = Carrito.objects.create()
+        request.session['carrito_id'] = carrito.id
+    else:
+        carrito = Carrito.objects.get(id=carrito_id)
+    
+    carrito_item, created = CarritoItem.objects.get_or_create(carrito=carrito, producto=producto)
+    if not created:
+        carrito_item.cantidad += 1
+    carrito_item.save()
+    return redirect('detalle_producto', producto_id=producto.id)
 
-    return render(request, 'cart/add_to_cart.html', {'product': product, 'form': form})
-
-def view_cart(request):
-    cart_items = CartItem.objects.all()
-    return render(request, 'cart/view_cart.html', {'cart_items': cart_items})
-
+def ver_carrito(request):
+    carrito_id = request.session.get('carrito_id')
+    if not carrito_id:
+        carrito = None
+    else:
+        carrito = Carrito.objects.get(id=carrito_id)
+    return render(request, 'carritoapp/ver_carrito.html', {'carrito': carrito})
