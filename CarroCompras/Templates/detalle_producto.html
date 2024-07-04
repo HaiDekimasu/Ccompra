@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ producto.nombre }}</title>
+</head>
+<body>
+    <h1>{{ producto.nombre }}</h1>
+    <p>{{ producto.descripcion }}</p>
+    <p>Precio: {{ producto.precio }}</p>
+    <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Agregar al Carrito</button>
+    </form>
+    <a href="{% url 'ver_carrito' %}">Ver Carrito</a>
+    <a href="{% url 'lista_productos' %}">Volver a la Lista de Productos</a>
+</body>
+</html>
