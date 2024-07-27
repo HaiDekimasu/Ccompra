@@ -6,18 +6,22 @@
     <link rel="stylesheet" href="{% static "styles/styles.css" %}">
 </head>
 <body>
-    <h1>Productos</h1>
-    <ul>
-        {% for producto in productos %}
-        <li>
-            <a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a> - {{ producto.precio }}
-            <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Agregar al Carrito</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+    <main>
+        {% block content %}
+        <h1>Productos</h1>
+        <ul>
+            {% for producto in productos %}
+            <li>
+                <a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a> - {{ producto.precio }}
+                <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Agregar al Carrito</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endblock content %}
+    </main>
     <a href="{% url 'ver_carrito' %}">Ver Carrito</a>
 </body>
 </html>
