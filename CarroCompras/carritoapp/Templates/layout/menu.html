@@ -1,10 +1,18 @@
 {% load static %}
 
 <nav class="containernav">
-    <div class="nav-list"style="width: 45%; display: inline-block;">
-        <a class="botonnav" href="{% url 'capitulos' %}">Capitulo</a>
-    </div>
-    <div class="nav-list"style="width: 45%; display: inline-block;">
-        <a class="botonnav" href="{% url 'manga' %}">Manga</a>
-    </div>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+    </ul>
 </nav>
